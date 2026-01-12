@@ -1,20 +1,22 @@
 # 📋 DOCUMENTACIÓN TÉCNICA COMPLETA - Lords Mobile Guía de Cacería v1.0
 
-## 🎯 OVERVIEW
+## 🎯 INFORMACIÓN GENERAL
 
 **Aplicación:** PWA (Progressive Web App) de guía de cacería de monstruos para Lords Mobile  
 **Usuario:** knayus (knayus@gmail.com)  
-**Archivo único:** index.html (186KB - HTML + CSS + JavaScript + datos embebidos)  
-**Fuente de datos:** Caceria.xlsm (Excel con 25 hojas de monstruos)
+**Archivo principal:** index.html (238KB - HTML + CSS + JavaScript + datos embebidos)  
+**Fuente de datos:** Caceria.xlsm (Excel con 25 hojas de monstruos)  
+**Formato de imágenes:** WebP con transparencia
 
-**Características principales:**
-- 25 monstruos (24 normales + 1 especial)
+**Características:**
+- 25 monstruos (24 normales + 1 especial: Caballero Fantasma)
 - 57 héroes (20 F2P + 4 Evento + 33 P2P)
+- Equipos predefinidos extraídos del Excel
 - Equipos personalizables con localStorage
-- Sistema import/export de configuración
-- Drop rates para cada monstruo
-- Protecciones anti-copia
-- Diseño responsive
+- Sistema import/export de configuración JSON
+- Drop rates para cada monstruo (2-5 items por monstruo)
+- Protecciones anti-copia (deshabilitables)
+- Diseño responsive (móvil, tablet, desktop)
 
 ---
 
@@ -22,11 +24,11 @@
 
 ```
 /
-├── index.html                    # App completa (186KB)
+├── index.html                    # Aplicación completa (238KB)
 ├── manifest.json                 # PWA config
 ├── img/
-│   ├── fondo_epico.webp         # Fondo pantalla inicio
-│   ├── monstruos/
+│   ├── fondo_epico.webp         # Fondo pantalla inicio (1920x1080px)
+│   ├── monstruos/               # 25 imágenes .webp
 │   │   ├── abeja_reina.webp
 │   │   ├── alaescarcha.webp
 │   │   ├── alanegra.webp
@@ -52,7 +54,7 @@
 │   │   ├── serpiente_gladiador.webp
 │   │   ├── titan_de_marea.webp
 │   │   └── terrospin.webp
-│   └── heroes/
+│   └── heroes/                   # 57 imágenes .webp (circulares o cuadradas)
 │       ├── hijo_de_la_luz.webp
 │       ├── caballero_letal.webp
 │       ├── guardian.webp
@@ -66,7 +68,7 @@
 │       ├── sombra.webp
 │       ├── estafador.webp
 │       ├── rastreadora.webp
-│       ├── duende_bombardero.webp
+│       ├── trasgo_dinamita.webp
 │       ├── elementalista.webp
 │       ├── incineradora.webp
 │       ├── prima_donna.webp
@@ -78,11 +80,11 @@
 │       ├── pegaso.webp
 │       ├── vigilante.webp
 │       ├── barbaro.webp
-│       ├── berserker.webp
+│       ├── furiosa.webp
 │       ├── don_guapo.webp
 │       ├── guardian_del_bosque.webp
 │       ├── el_magmaroide.webp
-│       ├── cambiaformas.webp
+│       ├── tramoyista.webp
 │       ├── vapobot.webp
 │       ├── el_grandulon.webp
 │       ├── centauro_vengativo.webp
@@ -97,12 +99,12 @@
 │       ├── rompeolas.webp
 │       ├── cronista.webp
 │       ├── seguidor_oscuro.webp
-│       ├── mago_oscuro.webp
+│       ├── magister_oscuro.webp
 │       ├── bruja_onirica.webp
-│       ├── necroduque.webp
+│       ├── necroduke.webp
 │       ├── oraculo.webp
 │       ├── diablilla.webp
-│       ├── sabio_del_desierto.webp
+│       ├── sabia_del_desierto.webp
 │       ├── princesa_caracol.webp
 │       ├── cantante_marina.webp
 │       ├── zorro_de_la_tormenta.webp
@@ -113,7 +115,7 @@
 └── RESUMEN_DESARROLLO.md
 ```
 
-**CRÍTICO:** Las rutas de imágenes NO llevan `/` inicial (para compatibilidad con GitHub Pages):
+**CRÍTICO:** Las rutas de imágenes NO llevan `/` inicial (compatibilidad GitHub Pages):
 - ✅ Correcto: `img/monstruos/abeja_reina.webp`
 - ❌ Incorrecto: `/img/monstruos/abeja_reina.webp`
 
@@ -135,7 +137,7 @@
 11. Sombra
 12. Estafador
 13. Rastreadora
-14. Duende Bombardero
+14. Trasgo Dinamita
 15. Elementalista
 16. Incineradora
 17. Prima Donna
@@ -151,11 +153,11 @@
 
 ### P2P (33):
 25. Bárbaro
-26. Berserker
+26. Furiosa
 27. Don Guapo
 28. Guardián del Bosque
 29. El Magmaroide
-30. Cambiaformas
+30. Tramoyista
 31. Vapobot
 32. El Grandulón
 33. Centauro Vengativo
@@ -170,12 +172,12 @@
 42. Rompeolas
 43. Cronista
 44. Seguidor Oscuro
-45. Mago Oscuro
+45. Magister Oscuro
 46. Bruja Onírica
-47. Necroduque
+47. Necroduke
 48. Oráculo
 49. Diablilla
-50. Sabio del Desierto
+50. Sabia del Desierto
 51. Princesa Caracol
 52. Cantante Marina
 53. Zorro de la Tormenta
@@ -183,7 +185,8 @@
 55. Alquimista Errante
 56. Muñeca Mecánica
 
-**Conversión nombre → archivo:**
+### Conversión nombre → archivo:
+
 ```javascript
 function heroToFilename(name) {
     return name
@@ -202,10 +205,12 @@ function getHeroImage(heroName) {
 }
 ```
 
-**Ejemplos:**
+**Ejemplos de conversión:**
 - "Cuervo Negro" → `cuervo_negro.webp`
 - "Muñeca Mecánica" → `muneca_mecanica.webp`
+- "Príncipe de Ladrones" → `principe_de_ladrones.webp`
 - "Sacerdotisa de Crepúsculo" → `sacerdotisa_de_crepusculo.webp`
+- "Sabia del Desierto" → `sabia_del_desierto.webp`
 
 ---
 
@@ -238,7 +243,7 @@ function getHeroImage(heroName) {
 24. Terrospín
 
 ### Especial (1):
-25. Caballero Fantasma (estructura diferente, sin niveles)
+25. **Caballero Fantasma** - Estructura diferente (sin niveles, solo lista de héroes)
 
 **Conversión nombre → archivo:** (misma función que héroes)
 - "Abeja Reina" → `abeja_reina.webp`
@@ -259,28 +264,36 @@ function getHeroImage(heroName) {
     "teams": {
         "f2p": {
             "level1-3": [
-                ["Héroe1", "Héroe2", "Héroe3", "Héroe4", "Héroe5"],  // Principal
-                ["HéroeA", "HéroeB", "HéroeC", "HéroeD", "HéroeE"]   // Alternativa
+                ["Héroe1", "Héroe2", "Héroe3", "Héroe4", "Héroe5"],     // Principal
+                ["HéroeA", "HéroeB", "HéroeC", "HéroeD", "HéroeE"],     // Alternativa
+                ["HéroeX", "HéroeY", "HéroeZ", "HéroeW", "HéroeQ"]      // Alternativa 2 (si existe)
             ],
             "level4": [
-                ["Héroe1", "Héroe2", "Héroe3", "Héroe4", "Héroe5"]   // Principal
+                ["Héroe1", "Héroe2", "Héroe3", "Héroe4", "Héroe5"],     // Principal
+                ["HéroeA", "HéroeB", "HéroeC", "HéroeD", "HéroeE"],     // Alternativa (si existe)
+                ["HéroeX", "HéroeY", "HéroeZ", "HéroeW", "HéroeQ"]      // Alternativa 2 (si existe)
             ],
             "level5": [
-                ["Héroe1", "Héroe2", "Héroe3", "Héroe4", "Héroe5"],  // Principal
-                ["HéroeA", "HéroeB", "HéroeC", "HéroeD", "HéroeE"]   // Alternativa (si existe)
+                ["Héroe1", "Héroe2", "Héroe3", "Héroe4", "Héroe5"],     // Principal
+                ["HéroeA", "HéroeB", "HéroeC", "HéroeD", "HéroeE"],     // Alternativa (si existe)
+                ["HéroeX", "HéroeY", "HéroeZ", "HéroeW", "HéroeQ"]      // Alternativa 2 (si existe)
             ]
         },
         "p2p": {
             "level1-3": [
-                ["Héroe1", "Héroe2", "Héroe3", "Héroe4", "Héroe5"],  // Principal
-                ["HéroeA", "HéroeB", "HéroeC", "HéroeD", "HéroeE"]   // Alternativa
+                ["Héroe1", "Héroe2", "Héroe3", "Héroe4", "Héroe5"],
+                ["HéroeA", "HéroeB", "HéroeC", "HéroeD", "HéroeE"],
+                ["HéroeX", "HéroeY", "HéroeZ", "HéroeW", "HéroeQ"]
             ],
             "level4": [
-                ["Héroe1", "Héroe2", "Héroe3", "Héroe4", "Héroe5"],  // Principal
-                ["HéroeA", "HéroeB", "HéroeC", "HéroeD", "HéroeE"]   // Alternativa
+                ["Héroe1", "Héroe2", "Héroe3", "Héroe4", "Héroe5"],
+                ["HéroeA", "HéroeB", "HéroeC", "HéroeD", "HéroeE"],
+                ["HéroeX", "HéroeY", "HéroeZ", "HéroeW", "HéroeQ"]
             ],
             "level5": [
-                ["Héroe1", "Héroe2", "Héroe3", "Héroe4", "Héroe5"]   // Principal (puede tener alternativa)
+                ["Héroe1", "Héroe2", "Héroe3", "Héroe4", "Héroe5"],
+                ["HéroeA", "HéroeB", "HéroeC", "HéroeD", "HéroeE"],
+                ["HéroeX", "HéroeY", "HéroeZ", "HéroeW", "HéroeQ"]
             ]
         }
     },
@@ -308,6 +321,8 @@ function getHeroImage(heroName) {
     ]
 }
 ```
+
+**IMPORTANTE:** Cada nivel puede tener entre 0 y 3 equipos (Principal + hasta 2 Alternativas). Todos los equipos tienen exactamente 5 héroes.
 
 ### Caballero Fantasma (Especial):
 
@@ -345,7 +360,18 @@ function getHeroImage(heroName) {
 ## 📊 EXTRACCIÓN DE DATOS DEL EXCEL
 
 **Archivo fuente:** `Caceria.xlsm`  
-**25 hojas:** Una por cada monstruo (nombre exacto del monstruo como nombre de hoja)
+**25 hojas:** Una por cada monstruo (nombre exacto del monstruo)
+
+### Ubicaciones en Excel:
+
+- **F2P:** Columna C (índice 3), filas 15-19, 21-25, 27-31
+- **P2P:** Columna J (índice 10), filas 15-19, 21-25, 27-31
+- **Drop Rates:** Columnas J-K-L (índices 10-11-12), filas 7-11
+
+**Estructura de filas por nivel:**
+- **Nivel 1-3:** Filas 15, 17, 19 (Principal, Alternativa, Alternativa 2)
+- **Nivel 4:** Filas 21, 23, 25 (Principal, Alternativa, Alternativa 2)
+- **Nivel 5:** Filas 27, 29, 31 (Principal, Alternativa, Alternativa 2)
 
 ### Python - Código de extracción:
 
@@ -361,40 +387,35 @@ def limpiar_nombre(nombre):
     if not nombre:
         return None
     nombre = str(nombre).strip()
+    # Ignorar etiquetas como "Héroes (11K)"
+    if '(' in nombre or 'Héroes' == nombre:
+        return None
     nombre = re.sub(r'^[\d\-\s]+', '', nombre)
     if len(nombre) < 3:
         return None
     return nombre
 
-def extraer_equipos(sheet, start_col, start_row, num_equipos=2):
-    """
-    Extrae equipos de 5 héroes cada uno
-    start_col: columna inicial (2 para F2P, 10 para P2P)
-    start_row: fila inicial
-    num_equipos: cantidad de equipos a extraer (Principal + Alternativa)
-    """
+def extraer_todos_equipos(sheet, start_col, filas):
+    """Extrae TODOS los equipos válidos de un conjunto de filas"""
     equipos = []
-    for i in range(num_equipos):
-        row = start_row + (i * 2)  # Cada equipo está 2 filas abajo
+    for row in filas:
         equipo = []
-        for col_offset in range(5):  # 5 héroes por equipo
+        for col_offset in range(5):  # Exactamente 5 héroes
             valor = sheet.cell(row, start_col + col_offset).value
             nombre = limpiar_nombre(valor)
             if nombre:
                 equipo.append(nombre)
-        if len(equipo) >= 3:  # Mínimo 3 héroes para ser válido
+        if len(equipo) == 5:  # Solo si tiene exactamente 5
             equipos.append(equipo)
     return equipos
 
 def extraer_drops(sheet):
-    """
-    Extrae drop rates desde columna J-L (10-12), filas 7-11
-    """
+    """Extrae drop rates desde columna J-L (10-12), filas 7-11"""
     drops = []
     for row in range(7, 12):
-        item = sheet.cell(row, 10).value      # Columna J - Artículo
-        percent = sheet.cell(row, 11).value   # Columna K - Porcentaje
-        rarity = sheet.cell(row, 12).value    # Columna L - Rareza
+        item = sheet.cell(row, 10).value      # Columna J
+        percent = sheet.cell(row, 11).value   # Columna K
+        rarity = sheet.cell(row, 12).value    # Columna L
         
         if item and percent:
             drops.append({
@@ -404,7 +425,7 @@ def extraer_drops(sheet):
             })
     return drops
 
-# Extraer todos los monstruos
+# Lista de monstruos normales
 monstruos_normales = [
     'Abeja Reina', 'Alaescarcha', 'Alanegra', 'Ballena Ártica', 'Bestia de Nieve',
     'Buen Apetito', 'Buho Carroñero', 'Caballo de Troya', 'Chamán Voodoo',
@@ -419,23 +440,22 @@ data_completa = []
 for monstruo in monstruos_normales:
     sheet = wb[monstruo]
     
-    # F2P: columna B (2), filas 15-29
+    # F2P: Columna C (3), filas 15-19, 21-25, 27-31
     f2p = {
-        'level1-3': extraer_equipos(sheet, 2, 15, 2),   # Fila 15, 2 equipos
-        'level4': extraer_equipos(sheet, 2, 21, 1),      # Fila 21, 1 equipo
-        'level5': extraer_equipos(sheet, 2, 25, 2)       # Fila 25, 2 equipos
+        'level1-3': extraer_todos_equipos(sheet, 3, [15, 17, 19]),
+        'level4': extraer_todos_equipos(sheet, 3, [21, 23, 25]),
+        'level5': extraer_todos_equipos(sheet, 3, [27, 29, 31])
     }
     
-    # P2P: columna J (10), filas 15-29
+    # P2P: Columna J (10), filas 15-19, 21-25, 27-31
     p2p = {
-        'level1-3': extraer_equipos(sheet, 10, 15, 2),  # Fila 15, 2 equipos
-        'level4': extraer_equipos(sheet, 10, 21, 2),    # Fila 21, 2 equipos
-        'level5': extraer_equipos(sheet, 10, 25, 2)     # Fila 25, 2 equipos
+        'level1-3': extraer_todos_equipos(sheet, 10, [15, 17, 19]),
+        'level4': extraer_todos_equipos(sheet, 10, [21, 23, 25]),
+        'level5': extraer_todos_equipos(sheet, 10, [27, 29, 31])
     }
     
     drops = extraer_drops(sheet)
     
-    # Convertir nombre a filename
     nombre_archivo = monstruo.lower().replace(' ', '_').replace('á', 'a').replace('é', 'e').replace('í', 'i').replace('ó', 'o').replace('ú', 'u').replace('ñ', 'n')
     
     data_completa.append({
@@ -469,18 +489,6 @@ with open('monsters_data.json', 'w', encoding='utf-8') as f:
     json.dump(data_completa, f, ensure_ascii=False, indent=2)
 ```
 
-**Ubicaciones exactas en Excel:**
-- **F2P:** Columna B (índice 2), empezando en fila 15
-- **P2P:** Columna J (índice 10), empezando en fila 15
-- **Drop Rates:** Columnas J-K-L (índices 10-11-12), filas 7-11
-- **Estructura:**
-  - Fila 15: Principal nivel 1-3
-  - Fila 17: Alternativa nivel 1-3
-  - Fila 21: Principal nivel 4
-  - Fila 23: Alternativa nivel 4 (si existe)
-  - Fila 25: Principal nivel 5
-  - Fila 27: Alternativa nivel 5 (si existe)
-
 ---
 
 ## 🎨 DISEÑO Y ESTILOS CSS
@@ -512,22 +520,64 @@ with open('monsters_data.json', 'w', encoding='utf-8') as f:
 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 ```
 
+### Grid de monstruos:
+
+```css
+.monsters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-bottom: 100px;
+}
+
+.monster-card {
+    background: linear-gradient(135deg, #2d1b4e 0%, #1a1a3e 100%);
+    border-radius: 15px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 3px solid transparent;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.monster-card:hover {
+    transform: translateY(-8px);
+    border-color: #FFD700;
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+}
+
+.monster-img {
+    width: 100%;
+    height: 160px;
+    object-fit: contain;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.monster-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #FFD700;
+    text-align: center;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+```
+
 ### Layout responsive:
 
 ```css
-/* Monstruos grid */
-.monsters-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-
-/* Mobile */
 @media (max-width: 768px) {
     .monsters-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 15px;
+    }
+    
+    .monster-img {
+        height: 150px;
     }
 }
 ```
@@ -536,7 +586,7 @@ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
 ## 📱 ESTRUCTURA DE PANTALLAS
 
-### 1. HOME (Inicio)
+### 1. HOME (Inicio):
 ```html
 <div class="home-screen">
     <div class="home-content">
@@ -549,7 +599,7 @@ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 - Fondo: `img/fondo_epico.webp` con overlay oscuro
 - Botón centrado con efecto hover
 
-### 2. LISTA DE MONSTRUOS
+### 2. LISTA DE MONSTRUOS:
 ```html
 <div class="monsters-screen">
     <div class="header-actions">
@@ -563,14 +613,13 @@ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     </div>
     <div class="footer">
         <button onclick="showHome()">🏠 Inicio</button>
-        <button onclick="showConfig()">⚙️ Configuración</button>
     </div>
 </div>
 ```
 - Grid responsivo de 25 cards
 - Cada card: imagen + nombre + click handler
 
-### 3. DETALLE DE MONSTRUO
+### 3. DETALLE DE MONSTRUO:
 ```html
 <div class="monster-detail">
     <div class="detail-header">
@@ -595,6 +644,7 @@ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 <span class="team-label">Alternativa:</span>
                 <!-- 5 botones de héroes -->
             </div>
+            <!-- Más alternativas si existen -->
             <div class="team-row">
                 <span class="team-label">✨ Mis Héroes Personalizados:</span>
                 <!-- 5 slots editables -->
@@ -606,10 +656,6 @@ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     </div>
     
     <!-- Sección P2P (idéntica estructura) -->
-    <div class="team-section">
-        <div class="section-title">💰 Héroes P2P</div>
-        <!-- Niveles 1-3, 4, 5 con misma estructura -->
-    </div>
     
     <!-- Drop Rates -->
     <div class="drops-section">
@@ -631,7 +677,7 @@ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 </div>
 ```
 
-**Diseño de botón de héroe:**
+### Diseño de botón de héroe:
 ```html
 <div class="hero-btn" style="display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px; min-width: 80px;">
     <img src="img/heroes/cuervo_negro.webp" alt="Cuervo Negro" 
@@ -641,27 +687,11 @@ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 </div>
 ```
 - Imagen: 70x70px arriba
-- Nombre: debajo, centrado
+- Nombre: debajo, centrado, 11px
 - Border verde (#4ecca3)
-- Si falla imagen: se oculta, no rompe diseño
+- Si falla imagen: se oculta
 
-**Slot personalizado vacío:**
-```html
-<div class="hero-slot" onclick="openHeroModal('f2p', 'level1-3', 0)">
-    +
-</div>
-```
-
-**Slot personalizado lleno:**
-```html
-<div class="hero-slot filled" onclick="openHeroModal('f2p', 'level1-3', 0)">
-    <img src="img/heroes/cuervo_negro.webp" alt="Cuervo Negro" 
-         style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" 
-         onerror="this.outerHTML='<div style=\'font-size: 12px; text-align: center;\'>Cue</div>'">
-</div>
-```
-
-### 4. MODAL DE SELECCIÓN DE HÉROE
+### 4. MODAL DE SELECCIÓN DE HÉROE:
 ```html
 <div class="hero-modal" id="heroModal">
     <div class="hero-modal-content">
@@ -702,7 +732,7 @@ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
 **Value:** Array de 5 elementos (nombres de héroes o null)
 
-### Funciones:
+### Funciones principales:
 
 ```javascript
 // Variables globales
@@ -716,7 +746,7 @@ window.addEventListener('DOMContentLoaded', () => {
     showHome();
 });
 
-// Cargar configuración
+// Cargar
 function loadCustomTeams() {
     const saved = localStorage.getItem('lordsmobile_custom_teams');
     if (saved) {
@@ -728,12 +758,12 @@ function loadCustomTeams() {
     }
 }
 
-// Guardar configuración
+// Guardar
 function saveCustomTeams() {
     localStorage.setItem('lordsmobile_custom_teams', JSON.stringify(customTeams));
 }
 
-// Exportar a JSON
+// Exportar
 function exportConfig() {
     const data = JSON.stringify(customTeams, null, 2);
     const blob = new Blob([data], { type: 'application/json' });
@@ -746,7 +776,7 @@ function exportConfig() {
     alert('✅ Configuración exportada');
 }
 
-// Importar desde JSON
+// Importar
 function importConfig() {
     const input = document.createElement('input');
     input.type = 'file';
@@ -754,7 +784,6 @@ function importConfig() {
     input.onchange = e => {
         const file = e.target.files[0];
         if (!file) return;
-        
         const reader = new FileReader();
         reader.onload = event => {
             try {
@@ -771,7 +800,7 @@ function importConfig() {
     input.click();
 }
 
-// Reset completo
+// Reset
 function resetConfig() {
     if (confirm('⚠️ ¿Eliminar TODOS los equipos personalizados?')) {
         customTeams = {};
@@ -865,7 +894,7 @@ function renderMonsterDetail() {
 
 function renderTeamType(title, type) {
     const teams = currentMonster.teams[type];
-    let html = `<div class="team-section"><div class="section-title">${title === 'F2P' ? '🆓' : '💰'} ${title}</div>`;
+    let html = `<div class="team-section"><div class="section-title">${title === 'F2P' ? '🆓' : '💰'} Héroes ${title}</div>`;
     
     ['level1-3', 'level4', 'level5'].forEach(level => {
         const levelName = level === 'level1-3' ? 'Nivel 1-3' : level === 'level4' ? 'Nivel 4' : 'Nivel 5';
@@ -874,7 +903,7 @@ function renderTeamType(title, type) {
                 <div class="level-label">${levelName}</div>
                 ${teams[level].map((team, idx) => `
                     <div class="team-row">
-                        <span class="team-label">${idx === 0 ? 'Principal:' : 'Alternativa:'}</span>
+                        <span class="team-label">${idx === 0 ? 'Principal:' : `Alternativa${idx > 1 ? ' ' + idx : ''}:`}</span>
                         ${team.map(h => renderHeroButton(h)).join('')}
                     </div>
                 `).join('')}
@@ -1026,32 +1055,19 @@ document.addEventListener('contextmenu', e => e.preventDefault());
 
 // Bloquear atajos de teclado
 document.addEventListener('keydown', e => {
-    // F12
     if (e.key === 'F12') {
         e.preventDefault();
         return false;
     }
-    
-    // Ctrl+Shift+I (DevTools)
     if (e.ctrlKey && e.shiftKey && e.key === 'I') {
         e.preventDefault();
         return false;
     }
-    
-    // Ctrl+U (Ver código fuente)
     if (e.ctrlKey && e.key === 'u') {
         e.preventDefault();
         return false;
     }
-    
-    // Ctrl+S (Guardar)
     if (e.ctrlKey && e.key === 's') {
-        e.preventDefault();
-        return false;
-    }
-    
-    // Ctrl+C (Copiar - opcional)
-    if (e.ctrlKey && e.key === 'c') {
         e.preventDefault();
         return false;
     }
@@ -1061,7 +1077,6 @@ document.addEventListener('keydown', e => {
 ### CSS:
 
 ```css
-/* Deshabilitar selección de texto */
 body {
     user-select: none;
     -webkit-user-select: none;
@@ -1069,7 +1084,6 @@ body {
     -ms-user-select: none;
 }
 
-/* Copyright visible */
 body::before {
     content: "© Lords Mobile Hunting Guide - by knayus";
     position: fixed;
@@ -1081,8 +1095,6 @@ body::before {
     z-index: 9999;
 }
 ```
-
-**NOTA:** Estas protecciones NO son 100% efectivas contra usuarios avanzados, pero dificultan la copia casual.
 
 ---
 
@@ -1128,52 +1140,13 @@ body::before {
 
 ---
 
-## 🐛 TROUBLESHOOTING
-
-### Imágenes no cargan:
-
-**Verificar:**
-1. Rutas SIN `/` inicial: `img/heroes/cuervo_negro.webp` ✅
-2. Nombres exactos (lowercase, underscores, sin acentos)
-3. Formato `.webp`
-4. Archivos subidos en carpetas correctas
-5. GitHub Pages actualizado (esperar 2-3 minutos)
-6. Cache limpiado: Ctrl+Shift+R o Ctrl+F5
-
-**Test rápido:**
-```
-https://raw.githubusercontent.com/USUARIO/REPO/main/img/monstruos/abeja_reina.webp
-```
-Si devuelve 404 → imagen no está en GitHub
-
-### localStorage no funciona:
-
-**Causas comunes:**
-- Modo incógnito (localStorage deshabilitado)
-- Cuota excedida (poco probable con esta app)
-- Permisos del navegador
-
-**Debug:**
-```javascript
-console.log(localStorage.getItem('lordsmobile_custom_teams'));
-```
-
-### Drop Rates vacíos:
-
-**Verificar extracción:**
-- Excel columna J-L (10-12)
-- Filas 7-11
-- Nombres de items válidos
-
----
-
 ## 📊 ESTADÍSTICAS
 
-- **HTML total:** 186 KB
-- **Líneas de código:** ~2,300
+- **HTML total:** 238 KB
+- **Líneas de código:** ~2,400
 - **Monstruos:** 25
 - **Héroes:** 57
-- **Equipos predefinidos:** ~150
+- **Equipos predefinidos:** ~150-200
 - **Drop rates:** ~90 items
 - **Slots personalizables:** 375 (25 × 3 niveles × 5 slots)
 - **Imágenes totales:** 83 (.webp)
@@ -1189,42 +1162,38 @@ console.log(localStorage.getItem('lordsmobile_custom_teams'));
 
 **Tecnologías:**
 - HTML5
-- CSS3
-- JavaScript (Vanilla, ES6+)
+- CSS3 (Flexbox, Grid, Animations)
+- JavaScript (Vanilla ES6+)
 - PWA (Progressive Web App)
 - localStorage API
 - FileReader API (import)
 - Blob API (export)
 
-**Fuente de datos:** Excel (Caceria.xlsm) → Python → JSON embebido
+**Fuente de datos:** Excel (Caceria.xlsm) → Python → JSON embebido en HTML
 
 ---
 
 ## 🎯 INFORMACIÓN CRÍTICA PARA CLAUDE
 
-Si necesitas continuar este proyecto, leer este documento TE DARÁ TODO LO NECESARIO para:
-
-1. ✅ Entender la estructura completa
-2. ✅ Modificar cualquier parte del código
-3. ✅ Extraer datos del Excel correctamente
-4. ✅ Agregar nuevos monstruos o héroes
-5. ✅ Duplicar la app EXACTAMENTE igual
+Este documento contiene TODO lo necesario para duplicar la aplicación exactamente igual:
 
 **NUNCA cambiar:**
-- Nombres exactos de héroes (57)
-- Nombres exactos de monstruos (25)
-- Función `heroToFilename()` (crítica)
-- Estructura de `customTeams` en localStorage
-- Rutas de imágenes sin `/` inicial
+- 57 nombres exactos de héroes (ver lista completa)
+- 25 nombres de monstruos
+- Función `heroToFilename()` - CRÍTICA para conversión
 - Estructura JSON de `MONSTERS_DATA`
+- localStorage key: `lordsmobile_custom_teams`
+- Rutas de imágenes sin `/` inicial
+- Columnas Excel: F2P=3, P2P=10, Drops=10-12
+- Filas Excel: 15-19, 21-25, 27-31
 
 **Archivos generados:**
-- ✅ index.html (app completa - 186KB)
+- ✅ index.html (238KB - app completa)
 - ✅ manifest.json
-- ✅ monstruos_webp.zip (25 imágenes)
-- ✅ heroes_webp.zip (65 imágenes - requieren renombrado)
+- ✅ 25 imágenes de monstruos (.webp)
+- ✅ 57 imágenes de héroes (.webp)
 - ✅ README.md
-- ✅ RESUMEN_DESARROLLO.md (este archivo)
+- ✅ RESUMEN_DESARROLLO.md
 
 ---
 
