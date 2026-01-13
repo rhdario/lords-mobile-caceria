@@ -51,7 +51,7 @@
 21. Maestro Bombardero
 22. Dragón del Caos
 23. Pegaso
-24. Vigilante
+24. Observador
 
 ### P2P (33):
 25. Bárbaro
@@ -197,7 +197,7 @@ equipos_por_monstruo['Gorila']['p2p']['level1-3'].insert(1,
 
 # Megalarva - P2P Niveles 4 y 5
 equipos_por_monstruo['Megalarva']['p2p']['level4'] = [
-    ['Sacerdotisa Crepúsculo', 'Diablilla', 'Elementalista', 'Incineradora', 'Bruja Onírica']
+    ['Sacerdotisa de Crepúsculo', 'Diablilla', 'Elementalista', 'Incineradora', 'Bruja Onírica']
 ]
 equipos_por_monstruo['Megalarva']['p2p']['level5'] = [
     ['Centauro Vengativo', 'Diablilla', 'Elementalista', 'Incineradora', 'Bruja Onírica'],
@@ -293,7 +293,7 @@ equipos_por_monstruo['Gorila']['p2p']['level1-3'].insert(1,
 )
 
 equipos_por_monstruo['Megalarva']['p2p']['level4'] = [
-    ['Sacerdotisa Crepúsculo', 'Diablilla', 'Elementalista', 'Incineradora', 'Bruja Onírica']
+    ['Sacerdotisa de Crepúsculo', 'Diablilla', 'Elementalista', 'Incineradora', 'Bruja Onírica']
 ]
 equipos_por_monstruo['Megalarva']['p2p']['level5'] = [
     ['Centauro Vengativo', 'Diablilla', 'Elementalista', 'Incineradora', 'Bruja Onírica'],
