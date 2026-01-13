@@ -4354,7 +4354,7 @@
         ]
 };
 
-        const ALL_HEROES = [...HEROES_DATA.f2p, ...HEROES_DATA.event, ...HEROES_DATA.p2p].sort();
+        const ALL_HEROES = [...HEROES_DATA.f2p, ...HEROES_DATA.event, ...HEROES_DATA.p2p].sort((a, b) => a.localeCompare(b));
 
         let currentMonster = null;
         let currentSlot = null;
