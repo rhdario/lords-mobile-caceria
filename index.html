@@ -145,6 +145,7 @@
             transition: all 0.3s ease;
             border: 3px solid transparent;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+	    background: transparent;
         }
 
         .monster-card:hover {
@@ -160,7 +161,6 @@
             border-radius: 10px;
             margin-bottom: 12px;
             background: transparent;
-            mix-blend-mode: normal;
         }
 
         .monster-name {
@@ -4356,7 +4356,7 @@
         ]
 };
 
-        const ALL_HEROES = [...HEROES_DATA.f2p, ...HEROES_DATA.event, ...HEROES_DATA.p2p];
+        const ALL_HEROES = [...HEROES_DATA.f2p, ...HEROES_DATA.event, ...HEROES_DATA.p2p].sort();
 
         let currentMonster = null;
         let currentSlot = null;
