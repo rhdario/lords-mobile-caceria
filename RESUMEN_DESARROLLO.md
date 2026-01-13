@@ -43,7 +43,7 @@
 15. Elementalista
 16. Incineradora
 17. Prima Donna
-18. Sabio del Viento
+18. Sabio de Viento
 19. Escudero del Mar
 20. Reina de la Nieve
 
