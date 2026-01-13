@@ -690,3 +690,57 @@ NO usar `'C' in bloque` porque "BLOQUE C" contiene 'B' y dará falso positivo.
 ---
 
 **FIN DEL RESUMEN v1.0 - COMPLETO PARA CLONAR**
+
+---
+
+## 📝 ACTUALIZACIONES FINALES (Enero 2026)
+
+### Cambios aplicados en versión final:
+
+**1. Nombres de héroes corregidos:**
+- "Vigilante" → "Observador"
+- "Sacerdotisa Crepúsculo" → "Sacerdotisa de Crepúsculo"
+- "Sabio del Viento" → "Sabio de Viento"
+
+**2. Imágenes de monstruos:**
+- CSS `.monster-img` sin background ni mix-blend-mode (imágenes con transparencia real)
+- Agregado campo `detailImage` para imagen diferente en página de detalle
+- Formato: `nombre_monstruo_icon.webp` para imágenes de detalle
+- Portada usa: `nombre_monstruo.webp`
+- Detalle usa: `nombre_monstruo_icon.webp`
+
+**3. Selector de héroes:**
+- Héroes ordenados alfabéticamente en popup personalizado
+- Usa `localeCompare('es')` para orden correcto con acentos
+
+**4. Estructura final MONSTERS_DATA:**
+```javascript
+{
+    "name": "Abeja Reina",
+    "image": "img/monstruos/abeja_reina.webp",           // Portada
+    "detailImage": "img/monstruos/abeja_reina_icon.webp", // Detalle
+    "special_structure": false,
+    "teams": { ... },
+    "dropRates": [ ... ]
+}
+```
+
+**5. CSS final `.monster-img`:**
+```css
+.monster-img {
+    width: 100%;
+    height: 160px;
+    object-fit: contain;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+```
+
+**6. Orden alfabético héroes (línea 4624):**
+```javascript
+const allHeroes = [...HEROES_DATA.f2p, ...HEROES_DATA.event, ...HEROES_DATA.p2p].sort((a, b) => a.localeCompare(b, 'es'));
+```
+
+---
+
+**VERSIÓN FINAL: v1.0 (Contenido) - ZIP v1.3 (Empaquetado)**
